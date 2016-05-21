@@ -16,9 +16,10 @@ ParserAlbum::ParserAlbum(const QString & _dir, const QString &_name, QObject *pa
     m_pDoc->setContent(file);
 }
 
-Album ParserAlbum::getAlbumFromFile()
+Album ParserAlbum::getAlbumFromFile(const QString &_name)
 {
     Album newAlbum;
+    newAlbum.setName(_name);
     QDomElement element = m_pDoc->documentElement();
     QDomNode node = element.firstChild();
     while(!node.isNull())
@@ -26,19 +27,18 @@ Album ParserAlbum::getAlbumFromFile()
         if(node.isElement())
         {
             QDomElement domElement = node.toElement();
-            if(domElement.tagName() == "id")
-            {
-                newAlbum.setName(domElement.text());
-            }
-            if(domElement.tagName() == "images")
+            if(domElement.nodeName() == "images")
             {
                 if(domElement.hasChildNodes())
                 {
+                    qDebug() << domElement.nodeName();
                     getImages(newAlbum,domElement.childNodes());
                 }
             }
+            node = node.nextSibling().toElement();
         }
     }
+   // qDebug() << newAlbum.name();
     return newAlbum;
 }
 
@@ -48,6 +48,7 @@ void ParserAlbum::writeToAlbumByFile(Image *_image)
     QDomElement node  = element.firstChild().toElement();
     while(node.tagName() != "images")
     {
+        qDebug() << node.text();
         node = node.nextSibling().toElement();
     }
     QDomElement image;

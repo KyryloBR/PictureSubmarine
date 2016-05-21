@@ -26,6 +26,7 @@ void Controller::loadAlbums()
          QFileInfo fileInfo = list.at(i);
          qDebug() << fileInfo.baseName() << fileInfo.absoluteDir().path() << fileInfo.suffix() << "\n";
          m_pParser = new ParserAlbum(dir.currentPath(),fileInfo.baseName());
+         m_listAlbums.insert(fileInfo.baseName(),new Album(m_pParser->getAlbumFromFile()));
     }
 }
 
