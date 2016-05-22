@@ -30,7 +30,7 @@ ApplicationWindow {
             x : 121
             y : 92
             fillMode: Image.Stretch
-            source: album.currentImage.getQmlPath();
+            source: photo.getQmlPath();
         }
     }
 }

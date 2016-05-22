@@ -13,12 +13,12 @@
 class Controller : public QObject
 {
     Q_OBJECT
-//    Q_PROPERTY(Album* currentAlbum READ currentAlbum WRITE setCurrentAlbum NOTIFY currentAlbumChanged)
-//    Q_PROPERTY(Settings* configuration READ configuration WRITE setConfiguration NOTIFY configurationChanged)
+    //Q_PROPERTY(Album* currentAlbum READ currentAlbum WRITE setCurrentAlbum NOTIFY currentAlbumChanged)
+    //Q_PROPERTY(Settings* configuration READ configuration WRITE setConfiguration NOTIFY configurationChanged)
 public:
     Controller(QObject *parent = 0);
 
-//    Album * currentAlbum();
+      Album * currentAlbum();
 //    QString currentId();
 //    Settings * configuration();
 
@@ -32,7 +32,7 @@ public:
 //    void addImageToAlbum(const QString & _id, Image * _image);
 //    void addImageToCurrentAlbum(const QString & _id, Image * _image);
 //    void addAlbum(const QString & _id, Album * _newAlbum);
-    void loadAlbums();
+      void loadAlbums();
 //    void setSettings(Settings * _configuration);
 
 private:

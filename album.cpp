@@ -31,8 +31,10 @@ int Album::currentIndex()
 QList<QObject*> Album::getModel()
 {
     QList<QObject*> dataList;
+    qDebug() << m_name << m_imageList.size();
     for(int i = 0;i < m_imageList.size();++i)
     {
+        qDebug() << "Dickmus";
         dataList.append(m_imageList.at(i));
     }
     return dataList;

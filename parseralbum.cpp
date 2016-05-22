@@ -9,8 +9,7 @@ ParserAlbum::ParserAlbum(const QString & _dir, const QString &_name, QObject *pa
     QFile * file = new QFile(m_directory + "/" + _name + ".alm");
     if(!file->open(QIODevice::ReadWrite))
     {
-        qDebug() << "Error";
-        //return;
+        return;
     }
     m_pDoc = new QDomDocument();
     m_pDoc->setContent(file);
@@ -31,14 +30,16 @@ Album ParserAlbum::getAlbumFromFile(const QString &_name)
             {
                 if(domElement.hasChildNodes())
                 {
-                    qDebug() << domElement.nodeName();
                     getImages(newAlbum,domElement.childNodes());
                 }
             }
+            if(domElement.nodeName() == "current")
+            {
+                newAlbum.setCurrentIndex(domElement.text().toInt());
+            }
             node = node.nextSibling().toElement();
         }
-    }
-   // qDebug() << newAlbum.name();
+    } 
     return newAlbum;
 }
 
@@ -48,7 +49,6 @@ void ParserAlbum::writeToAlbumByFile(Image *_image)
     QDomElement node  = element.firstChild().toElement();
     while(node.tagName() != "images")
     {
-        qDebug() << node.text();
         node = node.nextSibling().toElement();
     }
     QDomElement image;
@@ -62,9 +62,9 @@ void ParserAlbum::switchFile(const QString &_file)
 
 }
 
-void ParserAlbum::getImages(Album alb, QDomNodeList list)
+void ParserAlbum::getImages(Album & alb, QDomNodeList list)
 {
-    for(int i = 0; i < list.count() - 1; ++i)
+    for(int i = 0; i < list.count(); ++i)
     {
         alb.append(new Image(list.at(i).toElement().text()));
     }

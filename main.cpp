@@ -17,11 +17,10 @@ int main(int argc, char *argv[])
     album->append("D:/Download/1.jpg");
     album->setCurrentIndex(0);
     Controller * pControl = new Controller;
-    Q_UNUSED(pControl)
-    engine.rootContext()->setContextProperty("photo",album->currentImage());
+    pControl->currentAlbum()->setCurrentImage(1);
+    engine.rootContext()->setContextProperty("photo",pControl->currentAlbum()->currentImage());
     engine.rootContext()->setContextProperty("album",album);
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
-//    engine.rootContext()->setContextProperty("PhotoModel",QVariant::fromValue(album->getModel()));
 
     return app.exec();
 }
