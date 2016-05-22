@@ -57,8 +57,25 @@ void ParserAlbum::writeToAlbumByFile(Image *_image)
     node.appendChild(image);
 }
 
+void ParserAlbum::createNewAlbum(Album *_pAlbum)
+{
+    QFile * file = new QFile(m_directory + "/" + _pAlbum->name() + ".alm");
+    switchFile(_pAlbum->name());
+    QDomElement firstChild = createElement("album");
+    m_pDoc->appendChild(firstChild);
+
+
+    QTextStream(file) << ;
+}
+
 void ParserAlbum::switchFile(const QString &_file)
 {
+    QFile * file = new QFile(m_directory + "/" + _file + ".alm");
+    if(!file->open(QIODevice::ReadWrite))
+    {
+        return;
+    }
+    m_pDoc->setContent(file);
 
 }
 
@@ -68,5 +85,33 @@ void ParserAlbum::getImages(Album & alb, QDomNodeList list)
     {
         alb.append(new Image(list.at(i).toElement().text()));
     }
+}
+
+QDomElement ParserAlbum::createElement(const QString &_name, const QString &_text)
+{
+    QDomElement domElement;
+    if(!_name.isEmpty())
+    {
+        domElement = m_pDoc->createElement(_name);
+
+    }
+
+    if(!_text.isEmpty())
+    {
+        QDomText text = m_pDoc->createTextNode(_text);
+        domElement.appendChild(text);
+    }
+
+    return domElement;
+}
+
+QDomElement ParserAlbum::createElement(const QString &_name)
+{
+    QDomElement domElement;
+    if(!_name.isEmpty())
+    {
+        domElement = m_pDoc->createElement(_name);
+    }
+    return domElement;
 }
 
