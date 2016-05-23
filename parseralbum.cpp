@@ -51,21 +51,27 @@ void ParserAlbum::writeToAlbumByFile(Image *_image)
     {
         node = node.nextSibling().toElement();
     }
-    QDomElement image;
-    image.setTagName("image");
-    image.setNodeValue(_image->sourceImage());
-    node.appendChild(image);
+    node.appendChild(createElement("image",_image->sourceImage()));
 }
 
 void ParserAlbum::createNewAlbum(Album *_pAlbum)
 {
-    QFile * file = new QFile(m_directory + "/" + _pAlbum->name() + ".alm");
-    switchFile(_pAlbum->name());
+    m_pDoc->clear();
     QDomElement firstChild = createElement("album");
     m_pDoc->appendChild(firstChild);
 
+    QDomElement images = createElement("images"," ");
+    QDomElement current = createElement("current","0");
 
-    QTextStream(file) << ;
+    firstChild.appendChild(images);
+    firstChild.appendChild(current);
+
+    QFile * file = new QFile(m_directory + "/" + _pAlbum->name() + ".alm");
+    if(file->open(QIODevice::WriteOnly))
+    {
+        QTextStream(file) << m_pDoc->toString();
+        file->close();
+    }
 }
 
 void ParserAlbum::switchFile(const QString &_file)

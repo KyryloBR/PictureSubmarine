@@ -66,7 +66,17 @@ void Controller::addImageToCurrentAlbum(Image *_image)
 
 void Controller::addAlbum(const QString &_id, Album *_newAlbum)
 {
+    if(m_listAlbums.find(_id) == m_listAlbums.end())
+    {
+        QDir dir;
+        dir.setFilter(QDir::Files | QDir::Hidden | QDir::NoSymLinks);
+        dir.setSorting(QDir::Size | QDir::Reversed);
+        dir.setCurrent(dir.currentPath() + m_pConfiguration->albumPath());
+        _newAlbum->setName(_id);
 
+        m_pParser = new ParserAlbum(dir.currentPath(), _id);
+        m_pParser->createNewAlbum(_newAlbum);
+    }
 }
 
 void Controller::loadAlbums()

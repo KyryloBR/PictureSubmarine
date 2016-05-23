@@ -13,13 +13,15 @@ public:
 
     Album getAlbumFromFile(const QString &_name);
     void writeToAlbumByFile(Image * _image);
-    //void createNewAlbum(Album * _pAlbum);
+    void createNewAlbum(Album * _pAlbum);
 
 public slots:
     void switchFile(const QString & _file);
 
 private:
     void getImages(Album &alb, QDomNodeList list);
+    QDomElement createElement(const QString & _name, const QString & _text);
+    QDomElement createElement(const QString & _name);
 
     QDomDocument * m_pDoc;
     QString m_directory;
