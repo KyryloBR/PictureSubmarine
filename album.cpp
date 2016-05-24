@@ -31,13 +31,24 @@ int Album::currentIndex()
 QList<QObject*> Album::getModel()
 {
     QList<QObject*> dataList;
-    qDebug() << m_name << m_imageList.size();
     for(int i = 0;i < m_imageList.size();++i)
     {
-        qDebug() << "Dickmus";
         dataList.append(m_imageList.at(i));
     }
     return dataList;
+}
+
+int Album::indexByImage(Image *_image)
+{
+    int index = -1;
+    for(int i = 0; i < m_imageList.size();++i)
+    {
+        if(m_imageList.at(i)->sourceImage() == _image->sourceImage())
+        {
+            index = i;
+        }
+    }
+    return index;
 }
 
 QString Album::name()

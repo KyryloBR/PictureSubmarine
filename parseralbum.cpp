@@ -4,7 +4,6 @@
 
 ParserAlbum::ParserAlbum(const QString & _dir, const QString &_name, QObject *parent) : QObject(parent)
 {
-    qDebug() << _dir << " : dir" << _name;
     m_directory = _dir;
     QFile * file = new QFile(m_directory + "/" + _name + ".alm");
     if(!file->open(QIODevice::ReadWrite))

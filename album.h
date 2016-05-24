@@ -16,7 +16,8 @@ public:
 
     Image *currentImage();
     int currentIndex();
-    QList<QObject *> getModel();
+    Q_INVOKABLE QList<QObject *> getModel();
+    Q_INVOKABLE int indexByImage(Image * _image);
     QString name();
 signals:
     void currentImageChanged(Image*);

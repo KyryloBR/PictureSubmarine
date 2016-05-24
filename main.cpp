@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
     Controller * pControl = new Controller;
     pControl->addAlbum("myphoto",new Album());
     pControl->currentAlbum()->setCurrentImage(1);
-    engine.rootContext()->setContextProperty("photo",pControl->currentAlbum()->currentImage());
+    engine.rootContext()->setContextProperty("controler",pControl);
     engine.rootContext()->setContextProperty("album",album);
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
 
