@@ -1,5 +1,8 @@
 import QtQuick 2.3
 import QtQuick.Controls 1.2
+import QtQuick.Dialogs 1.2
+import QtQuick.Window 2.0
+import QtQuick.Layouts 1.1
 
 ApplicationWindow {
     id : mainWindow;
@@ -11,9 +14,25 @@ ApplicationWindow {
     color: "#f1d3d3"
     title : qsTr("Picture Submarine");
 
+    FileDialog
+    {
+        id: fdOpenImage;
+        modality: Qt.WindowModal;
+        title: "Choose file";
+        selectExisting: true;
+        selectMultiple: true;
+        nameFilters: ["Image files (*.png *.jpg)", "All files (*)"];
+        selectedNameFilter: "Image files (*.png *.jpg)";
+        onAccepted:
+        {
+            console.log("Files : " + fileUrls);
+
+        }
+    }
+
     Rectangle {
         id: rectangle1
-        color: "#232121"
+        color: "#585050"
         border.width: 0
         anchors.leftMargin: -1
         anchors.topMargin: -3
@@ -31,6 +50,88 @@ ApplicationWindow {
             y : 92
             fillMode: Image.Stretch
             source: controler.currentAlbum.currentImage.getQmlPath();
+        }
+
+        Rectangle {
+            id: btnOpen
+            x: 50
+            y: 215
+            width: 40
+            height: 40
+            radius: 20
+            state: "sExit";
+            border.width: 2
+            Text
+            {
+                id: textBtnOpen;
+                anchors.centerIn: btnOpen;
+                text: "...";
+                font.bold: true
+                font.pointSize: 16
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                textFormat: Text.AutoText
+            }
+            MouseArea
+            {
+                anchors.fill: parent;
+                hoverEnabled: true;
+                onEntered:
+                {
+                    parent.state = "sEnter";
+                }
+                onExited:
+                {
+                    parent.state = "sExit";
+                }
+                onClicked:
+                {
+                    fdOpenImage.open();
+                }
+            }
+
+            states:[
+                State {
+                    name: "sExit"
+                    PropertyChanges {
+                        target: btnOpen;
+                        border.color: "#591542";
+                        color: "#00000000";
+                    }
+                    PropertyChanges {
+                        target: textBtnOpen;
+                        color: "#591542";
+                    }
+                },
+                State{
+                    name:"sEnter";
+                    PropertyChanges {
+                        target: btnOpen;
+                        border.color: "#585050";
+                        color: "#591542";
+                    }
+                    PropertyChanges {
+                        target: textBtnOpen;
+                        color: "#585050";
+
+                    }
+
+                }
+
+            ]
+            transitions: [
+                Transition {
+                    from: "*";
+                    to: "*";
+                    PropertyAnimation
+                    {
+                        targets: [btnOpen,textBtnOpen];
+                        properties: "border.color,color";
+                        duration: 1000;
+                    }
+                }
+            ]
+
         }
     }
 
