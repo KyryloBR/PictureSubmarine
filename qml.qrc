@@ -1,6 +1,11 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
+        <file>CurrentAlbumList.qml</file>
+        <file>ButtonOpen.qml</file>
+        <file>ButtonGroupControl.qml</file>
+        <file>ButtonNext.qml</file>
+        <file>ButtonPrevious.qml</file>
+        <file>AlbumList.qml</file>
     </qresource>
 </RCC>
-

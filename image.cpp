@@ -16,11 +16,6 @@ QString &Image::sourceImage()
     return m_source;
 }
 
-QString Image::getQmlPath()
-{
-    return QString("file:///" + m_source);
-}
-
 void Image::setSourceImage(const QString &_source)
 {
     m_source = _source;

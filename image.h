@@ -15,7 +15,6 @@ public:
     Image(const Image & instance);
 
     QString & sourceImage();
-    Q_INVOKABLE QString getQmlPath();
 signals:
     void sourceImageChanged(QString&);
 

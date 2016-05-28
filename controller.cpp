@@ -8,6 +8,7 @@
 Controller::Controller(QObject *parent) : QObject(parent)
 {
    m_pConfiguration = new Settings();
+   m_pParser = new ParserAlbum(QDir::currentPath() + m_pConfiguration->albumPath());
    loadAlbums();
    if(m_listAlbums.find("temp") != m_listAlbums.end())
    {
@@ -38,6 +39,16 @@ Settings *Controller::configuration()
     return NULL;
 }
 
+QList<QObject *> Controller::getModelAlbum()
+{
+    QList<QObject*> dataList;
+    for(int i = 0;i < m_listAlbums.values().size();++i)
+    {
+        dataList.append(m_listAlbums.values().at(i));
+    }
+    return dataList;
+}
+
 void Controller::setCurrentAlbum(const QString &_id)
 {
     if(m_listAlbums.find(_id) != m_listAlbums.end())
@@ -56,6 +67,16 @@ void Controller::addImageToAlbum(const QString &_id, Image *_image)
     }
 }
 
+void Controller::addImageToAlbum(const QString &_id,const QString & _image)
+{
+    if(m_listAlbums.find(_id) != m_listAlbums.end())
+    {
+        m_listAlbums[_id]->append(_image);
+        m_pParser->setFile(_id);
+        m_pParser->writeToAlbumByFile(_image);
+    }
+}
+
 void Controller::addImageToCurrentAlbum(Image *_image)
 {
     if(m_pCurrentAlbum)
@@ -68,14 +89,9 @@ void Controller::addAlbum(const QString &_id, Album *_newAlbum)
 {
     if(m_listAlbums.find(_id) == m_listAlbums.end())
     {
-        QDir dir;
-        dir.setFilter(QDir::Files | QDir::Hidden | QDir::NoSymLinks);
-        dir.setSorting(QDir::Size | QDir::Reversed);
-        dir.setCurrent(dir.currentPath() + m_pConfiguration->albumPath());
         _newAlbum->setName(_id);
-
-        m_pParser = new ParserAlbum(dir.currentPath(), _id);
-        m_pParser->createNewAlbum(_newAlbum);
+        m_pParser->setFile(_id);
+        m_pParser->createNewAlbum();
     }
 }
 
@@ -83,17 +99,14 @@ void Controller::loadAlbums()
 {
     QDir dir;
     dir.setFilter(QDir::Files | QDir::Hidden | QDir::NoSymLinks);
-    dir.setSorting(QDir::Size | QDir::Reversed);
-    dir.setCurrent(dir.currentPath() + m_pConfiguration->albumPath());
+    dir.setSorting(QDir::Name);
+    dir.setCurrent(m_pParser->getDirectory());
 
     QFileInfoList list = dir.entryInfoList();
     for(int i = 0; i < list.count(); ++i)
     {
          QFileInfo fileInfo = list.at(i);
-         m_pParser = new ParserAlbum(dir.currentPath(),fileInfo.baseName());
+         m_pParser->setFile(fileInfo.baseName());
          m_listAlbums.insert(fileInfo.baseName(),new Album(m_pParser->getAlbumFromFile(fileInfo.baseName())));
-         delete m_pParser;
     }
 }
-
-

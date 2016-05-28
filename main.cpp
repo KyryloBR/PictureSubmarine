@@ -17,10 +17,9 @@ int main(int argc, char *argv[])
     album->append("D:/Download/1.jpg");
     album->setCurrentIndex(0);
     Controller * pControl = new Controller;
-    pControl->addAlbum("myphoto",new Album());
-    pControl->currentAlbum()->setCurrentImage(1);
+    pControl->setCurrentAlbum("temp");
+    pControl->currentAlbum()->setCurrentImage(0);
     engine.rootContext()->setContextProperty("controler",pControl);
-    engine.rootContext()->setContextProperty("album",album);
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
 
     return app.exec();

@@ -21,7 +21,7 @@ public:
     Album * currentAlbum();
     QString currentId();
     Settings * configuration();
-
+    Q_INVOKABLE QList<QObject *> getModelAlbum();
 signals:
     void currentAlbumChanged(Album*);
     void currentIdChanged(QString);
@@ -30,6 +30,7 @@ signals:
 public slots:
     void setCurrentAlbum(const QString & _id);
     void addImageToAlbum(const QString & _id, Image * _image);
+    void addImageToAlbum(const QString & _id,const QString & _image);
     void addImageToCurrentAlbum(Image * _image);
     void addAlbum(const QString & _id, Album * _newAlbum);
     void loadAlbums();

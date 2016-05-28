@@ -2,20 +2,20 @@
 #include <QFile>
 #include <QDebug>
 
-ParserAlbum::ParserAlbum(const QString & _dir, const QString &_name, QObject *parent) : QObject(parent)
+ParserAlbum::ParserAlbum(const QString & _dir, QObject *parent) : QObject(parent)
 {
     m_directory = _dir;
-    QFile * file = new QFile(m_directory + "/" + _name + ".alm");
-    if(!file->open(QIODevice::ReadWrite))
-    {
-        return;
-    }
+    m_pFile = new QFile();
     m_pDoc = new QDomDocument();
-    m_pDoc->setContent(file);
 }
 
 Album ParserAlbum::getAlbumFromFile(const QString &_name)
 {
+    m_pFile->close();
+    if(!m_pFile->open(QIODevice::ReadOnly))
+    {
+        qDebug() << "Can`t open file : " << m_pFile->fileName();
+    }
     Album newAlbum;
     newAlbum.setName(_name);
     QDomElement element = m_pDoc->documentElement();
@@ -39,23 +39,39 @@ Album ParserAlbum::getAlbumFromFile(const QString &_name)
             node = node.nextSibling().toElement();
         }
     } 
+    m_pFile->close();
     return newAlbum;
 }
 
-void ParserAlbum::writeToAlbumByFile(Image *_image)
+void ParserAlbum::writeToAlbumByFile(const QString & _source)
 {
+    m_pFile->close();
+    if(!m_pFile->open(QIODevice::WriteOnly))
+    {
+        return;
+    }
     QDomElement element = m_pDoc->documentElement();
     QDomElement node  = element.firstChild().toElement();
     while(node.tagName() != "images")
     {
         node = node.nextSibling().toElement();
     }
-    node.appendChild(createElement("image",_image->sourceImage()));
+    node.appendChild(createElement("image",_source));
+    if(m_pFile->isOpen())
+    {
+        QTextStream(m_pFile) << m_pDoc->toString();
+        m_pFile->close();
+    }
 }
 
-void ParserAlbum::createNewAlbum(Album *_pAlbum)
+void ParserAlbum::createNewAlbum()
 {
-    m_pDoc->clear();
+    m_pFile->close();
+    if(!m_pFile->open(QIODevice::WriteOnly))
+    {
+        qDebug() << "Can`t open file : " << m_pFile->fileName();
+        return;
+    }
     QDomElement firstChild = createElement("album");
     m_pDoc->appendChild(firstChild);
 
@@ -65,23 +81,27 @@ void ParserAlbum::createNewAlbum(Album *_pAlbum)
     firstChild.appendChild(images);
     firstChild.appendChild(current);
 
-    QFile * file = new QFile(m_directory + "/" + _pAlbum->name() + ".alm");
-    if(file->open(QIODevice::WriteOnly))
+    if(m_pFile->isOpen())
     {
-        QTextStream(file) << m_pDoc->toString();
-        file->close();
+        QTextStream(m_pFile) << m_pDoc->toString();
+        m_pFile->close();
     }
 }
 
-void ParserAlbum::switchFile(const QString &_file)
+QString ParserAlbum::getDirectory()
 {
-    QFile * file = new QFile(m_directory + "/" + _file + ".alm");
-    if(!file->open(QIODevice::ReadWrite))
-    {
-        return;
-    }
-    m_pDoc->setContent(file);
+    return m_directory;
+}
 
+void ParserAlbum::setFile(const QString &_file)
+{
+        m_pFile->setFileName(m_directory + "/" + _file + ".alm");
+        m_pDoc->setContent(m_pFile);
+}
+
+void ParserAlbum::setDirectory(const QString &_dir)
+{
+    m_directory = _dir;
 }
 
 void ParserAlbum::getImages(Album & alb, QDomNodeList list)
