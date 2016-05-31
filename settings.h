@@ -43,7 +43,6 @@ public slots:
 
 private:
     QSettings * m_configuration;
-    QMap<QString,QVariant> m_defaults;
 };
 
 #endif // SETTINGS_H

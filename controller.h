@@ -34,6 +34,7 @@ public slots:
     void addImageToCurrentAlbum(Image * _image);
     void addAlbum(const QString & _id, Album * _newAlbum);
     void loadAlbums();
+    void writeCurrentImageInAlbum(int index);
 
 private:
     Album * m_pCurrentAlbum;

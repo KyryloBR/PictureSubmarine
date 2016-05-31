@@ -5,16 +5,13 @@
 Settings::Settings(QObject *parent) : QObject(parent)
 {
     m_configuration = new QSettings("Shaman","Picture Sumarine");
-//    QFile f("default.cfg");
-//    f.open(QIODevice::ReadOnly);
-//    m_configuration->setDefaults(f.readAll());
-     m_defaults.insert("directory/currentAlbum",false);
-     m_defaults.insert("directory/currentAlbumFile","none");
-     m_defaults.insert("directory/albumPath","/album");
-     m_defaults.insert("app/y",0);
-     m_defaults.insert("app/x",0);
-     m_defaults.insert("app/height",480);
-     m_defaults.insert("app/width",640);
+//     m_defaults.insert("directory/currentAlbum",false);
+//     m_defaults.insert("directory/currentAlbumFile","none");
+//     m_defaults.insert("directory/albumPath","/album");
+//     m_defaults.insert("app/y",0);
+//     m_defaults.insert("app/x",0);
+//     m_defaults.insert("app/height",480);
+//     m_defaults.insert("app/width",640);
 }
 
 int Settings::width()
@@ -39,7 +36,7 @@ int Settings::y()
 
 QString Settings::albumPath()
 {
-    return m_configuration->value("directory/albumPath").toString() == "" ? m_defaults["directory/albumPath"].toString() : m_configuration->value("directory/albumPath").toString();
+    return m_configuration->value("directory/albumPath").toString() == "" ? "/album" : m_configuration->value("directory/albumPath").toString();
 }
 
 QString Settings::currentAlbumFile()

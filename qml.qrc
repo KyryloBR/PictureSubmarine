@@ -7,5 +7,7 @@
         <file>ButtonNext.qml</file>
         <file>ButtonPrevious.qml</file>
         <file>AlbumList.qml</file>
+        <file>ButtonAlbumsOpen.qml</file>
+        <file>ButtonCurrentTitle.qml</file>
     </qresource>
 </RCC>

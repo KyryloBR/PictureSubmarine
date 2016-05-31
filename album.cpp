@@ -74,12 +74,26 @@ void Album::setCurrentIndex(int index)
 
 void Album::next()
 {
-    setCurrentIndex(m_currentIndex + 1);
+    if(m_currentIndex == m_imageList.size() - 1)
+    {
+        setCurrentIndex(0);
+    }
+    else
+    {
+        setCurrentIndex(m_currentIndex + 1);
+    }
 }
 
 void Album::previous()
 {
-    setCurrentIndex(m_currentIndex - 1);
+    if(m_currentIndex == 0)
+    {
+        setCurrentIndex(m_imageList.size() - 1);
+    }
+    else
+    {
+        setCurrentIndex(m_currentIndex - 1);
+    }
 }
 
 void Album::append(Image *_image)

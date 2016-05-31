@@ -93,6 +93,29 @@ QString ParserAlbum::getDirectory()
     return m_directory;
 }
 
+void ParserAlbum::writeCurrentInAlbum(int _current)
+{
+    m_pFile->close();
+    if(!m_pFile->open(QIODevice::WriteOnly))
+    {
+        return;
+    }
+    QDomElement element = m_pDoc->documentElement();
+    QDomElement node  = element.firstChild().toElement();
+    while(node.tagName() != "current")
+    {
+        node = node.nextSibling().toElement();
+    }
+    QDomElement CurrentElement = createElement("current",QString::number(_current));
+    element.replaceChild(CurrentElement,node);
+
+    if(m_pFile->isOpen())
+    {
+        QTextStream(m_pFile) << m_pDoc->toString();
+        m_pFile->close();
+    }
+}
+
 void ParserAlbum::setFile(const QString &_file)
 {
         m_pFile->setFileName(m_directory + "/" + _file + ".alm");

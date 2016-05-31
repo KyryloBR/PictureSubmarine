@@ -9,12 +9,13 @@ class ParserAlbum : public QObject
 {
     Q_OBJECT
 public:
-    ParserAlbum(const QString &_dir, /*const QString & _name,*/ QObject *parent = 0);
+    ParserAlbum(const QString &_dir, QObject *parent = 0);
 
     Album getAlbumFromFile(const QString &_name);
-    void writeToAlbumByFile(/*const QString & _album,*/ const QString &_source);
-    void createNewAlbum(/*Album * _pAlbum*/);
+    void writeToAlbumByFile(const QString &_source);
+    void createNewAlbum();
     QString getDirectory();
+    void writeCurrentInAlbum(int _current);
 
 public slots:
     void setFile(const QString & _file);

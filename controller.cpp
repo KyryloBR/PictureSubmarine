@@ -14,6 +14,7 @@ Controller::Controller(QObject *parent) : QObject(parent)
    {
        m_pCurrentAlbum = m_listAlbums["temp"];
    }
+   connect(m_pCurrentAlbum,SIGNAL(currentIndexChanged(int)),this,SLOT(writeCurrentImageInAlbum(int)));
 }
 
 Album *Controller::currentAlbum()
@@ -109,4 +110,10 @@ void Controller::loadAlbums()
          m_pParser->setFile(fileInfo.baseName());
          m_listAlbums.insert(fileInfo.baseName(),new Album(m_pParser->getAlbumFromFile(fileInfo.baseName())));
     }
+}
+
+void Controller::writeCurrentImageInAlbum(int index)
+{
+    m_pParser->setFile(m_pCurrentAlbum->name());
+    m_pParser->writeCurrentInAlbum(index);
 }
