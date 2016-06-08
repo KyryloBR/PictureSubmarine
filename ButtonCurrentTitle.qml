@@ -28,7 +28,7 @@ Item {
             width: 150
             height: 50
             color: "#591542"
-            text: "Unset";
+            text: controler.currentAlbum.name;
             style: Text.Normal
             font.italic: false
             font.bold: true
@@ -52,6 +52,10 @@ Item {
             onExited:
             {
                 parent.state = "sExit";
+            }
+            onClicked:
+            {
+                generalWindow.state = "sCurrentAlbumShow";
             }
         }
 

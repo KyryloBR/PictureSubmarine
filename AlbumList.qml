@@ -11,8 +11,8 @@ Item {
     {
         id:albumList;
         width: 420
-        height: 80
-        enabled: false;
+        height: 130
+        enabled: true;
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 0
         snapMode: ListView.NoSnap
@@ -28,7 +28,7 @@ Item {
                     state: "sExit";
                     Rectangle
                     {
-                       height : 80;
+                       height : 130;
                        width: 10;
                        opacity: 0;
                     }
@@ -39,8 +39,8 @@ Item {
                         border.color: "#591542";
                         border.width: 3;
                         color : "#ffffff"
-                        height : 80;
-                        width: 80;
+                        height : 130;
+                        width: 130;
                         Column
                         {
                             y: 10;
@@ -48,9 +48,9 @@ Item {
                             {
                                 id:coverAlbum;
                                 x : 15;
-                                width:50;
-                                height: 50;
-                                source: modelData.currentImage.sourceImage;
+                                width:100;
+                                height: 100;
+                                source: modelData.countImage() === 0 ? "Images/logo.png" : modelData.currentImage.sourceImage;
                                 onSourceChanged:
                                 {
                                   animationChangeCover.start();
@@ -84,7 +84,7 @@ Item {
                                 verticalAlignment: Text.AlignVCenter
                                 font.pointSize: 10
                                 color: "#591542";
-                                x:(80 - (albumName.text.length * 8))/2;
+                                x:(130 - (albumName.text.length * 8))/2;
                             }
                         }
                         MouseArea
@@ -96,6 +96,9 @@ Item {
                             onClicked:
                             {
                                 controler.setCurrentAlbum(modelData.name);
+                                btnGroup.setTitleCurrentAlbum(modelData.name);
+//                                controler.configuration.setCurrentAlbumFile(modelData.name);
+                                currentAlbum.setCurrentIndex(controler.currentAlbum.currentIndex);
                                 slidePart1.start();
                                 currentAlbum.setModelCurrent(controler.currentAlbum.getModel());
                                 generalWindow.state = "sCurrentAlbumShow";

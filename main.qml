@@ -42,6 +42,8 @@ ApplicationWindow {
 
     FileDialog
     {
+        property string nameCalledFunction: "";
+
         id: fdOpenImage;
         modality: Qt.WindowModal;
         title: "Choose file";
@@ -51,7 +53,17 @@ ApplicationWindow {
         selectedNameFilter: "Image files (*.png *.jpg *.bmp)";
         onAccepted:
         {
-            controler.addImageToAlbum("temp",fileUrl);
+            if(nameCalledFunction === "Button Open")
+            {
+                controler.createCurrentAlbum(folder,fileUrl);
+                console.log("Button Open");
+            }
+            else if(nameCalledFunction === "Add Button")
+            {
+                controler.addImages(fileUrls);
+                console.log("Add Button");
+            }
+
             currentAlbum.setModelCurrent(controler.currentAlbum.getModel());
         }
     }
@@ -65,19 +77,26 @@ ApplicationWindow {
         anchors.leftMargin: -1
         anchors.topMargin: -3
         anchors.fill: parent
-        state : "sCurrentAlbumShow"
+        state :"sAlbumListShow";
+
+        onStateChanged:
+        {
+            if(generalWindow.state === "sAlbumListShow")
+            {
+                slidePart2.start();
+            }
+        }
 
         Image {
             id: currentImg;
-            transformOrigin: Item.Center
+            x: 170
+            width: 303
             anchors.top: parent.top
-            anchors.topMargin: 92
+            anchors.topMargin: 101
             anchors.bottom: parent.bottom
-            anchors.bottomMargin: 91
-            anchors.left: parent.left
-            anchors.leftMargin: 121
-            anchors.right: parent.right
-            anchors.rightMargin: 120
+            anchors.bottomMargin: 160
+            anchors.horizontalCenter: parent.horizontalCenter
+            transformOrigin: Item.Center
             z: 2
             scale: 1
             fillMode: Image.PreserveAspectFit;
@@ -89,7 +108,14 @@ ApplicationWindow {
                 to: 0.1;
                 duration: 1000;
                 onStopped: {
-                    currentImg.source = controler.currentAlbum.currentImage.sourceImage;
+                    if(controler.currentAlbum.countImage() === 0)
+                    {
+                        currentImg.source = "Images/logo.png"
+                    }
+                    else
+                    {
+                        currentImg.source = controler.currentAlbum.currentImage.sourceImage;
+                    }
                     slidePart2.start();
                 }
             }
@@ -101,7 +127,6 @@ ApplicationWindow {
                 duration: 1000;
                 easing.type: Easing.Linear
             }
-            source: controler.currentAlbum.currentImage.sourceImage;
         }
         ButtonGroupControl
         {
@@ -109,6 +134,7 @@ ApplicationWindow {
             x: 0
             width: 600
             height: 66
+            z: 2
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.top: parent.top
             anchors.topMargin: 0
@@ -117,61 +143,141 @@ ApplicationWindow {
         AlbumList
         {
             id:albumList;
-            y: 404;
-            height: 79;
+            y: 384
+            height: 130
+            z: 2
             anchors.right: parent.right;
-            anchors.rightMargin: 0;
+            anchors.rightMargin: 111
             anchors.left: parent.left;
-            anchors.leftMargin: 0;
+            anchors.leftMargin: 0
             anchors.bottom: parent.bottom;
-            anchors.bottomMargin: 0;
-            onOpacityChanged:
-            {
-                if(albumList.opacity === 1.0)
-                {
-                    albumList.setEnabledDelegate(true);
-                }
-                else if(albumList.opacity === 0)
-                {
-                    albumList.setEnabledDelegate(false);
-                }
-            }
+            anchors.bottomMargin: 0
         }
 
         CurrentAlbumList
         {
             id:currentAlbum;
-            y: 404;
-            height: 79;
-            visible: true;
-            anchors.right: parent.right;
-            anchors.rightMargin: 0;
-            anchors.left: parent.left;
-            anchors.leftMargin: 0;
-            anchors.bottom: parent.bottom;
-            anchors.bottomMargin: 0;
-            onOpacityChanged:
+            y: 353
+            height: 130
+            z: 2
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 0
+            anchors.left: parent.left
+            anchors.leftMargin: 0
+            anchors.right: parent.right
+            anchors.rightMargin: 111
+        }
+
+        Rectangle {
+            id: rectangle1
+            x: 530
+            y: 0
+            width: 111
+            height: 130
+            color: "#585050"
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 0
+            anchors.right: parent.right
+            anchors.rightMargin: 0
+            z: 3
+            border.width: 0
+
+            AddButton
             {
-                if(currentAlbum.opacity === 1.0)
-                {
-                    currentAlbum.setEnabledDelegate(true);
-                }
-                else if(currentAlbum.opacity === 0)
-                {
-                    currentAlbum.setEnabledDelegate(false);
-                }
+                id: addButton
+                x: 31
+                width: 50
+                anchors.top: parent.top
+                anchors.topMargin: 8
+                anchors.bottom: parent.bottom
+                anchors.bottomMargin: 72
+                anchors.horizontalCenter: parent.horizontalCenter
+            }
+
+            RemoveButton
+            {
+                x: 31
+                width: 50
+                anchors.top: parent.top
+                anchors.topMargin: 72
+                anchors.bottom: parent.bottom
+                anchors.bottomMargin: 8
+                anchors.horizontalCenter: parent.horizontalCenter
             }
         }
+
+        AddWindow
+        {
+            id: addForm;
+            state: "sHide"
+            x: 144
+            y: 170
+            z : 3;
+            width: 355
+            height: 85
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.verticalCenter: parent.verticalCenter
+        }
+
+        InfoBox
+        {
+            id: message
+            x: 142
+            y: 167
+            z : 3;
+            width: 355
+            height: 85
+            state:"sHide";
+            message: ""
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.verticalCenter: parent.verticalCenter
+        }
+
+
+        Text {
+            id: albumListText
+            x: 21
+            width: 600
+            height: 86
+            color: "#ffffff"
+            text: qsTr("Your Album List")
+            anchors.top: parent.top
+            anchors.topMargin: 0
+            anchors.horizontalCenter: parent.horizontalCenter
+            styleColor: "#591542"
+            style: Text.Outline
+            font.bold: true
+            verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: Text.AlignHCenter
+            font.pixelSize: 55
+        }
+
         states:[
             State {
                 name: "sCurrentAlbumShow"
                 PropertyChanges {
                     target: currentAlbum;
                     opacity: 1.0;
+                    enabled:true;
                 }
                 PropertyChanges {
                     target: albumList;
                     opacity: 0.0;
+                    enabled:false;
+                }
+                PropertyChanges {
+                    target: btnGroup
+                    opacity : 1.0;
+                    enabled : true;
+                }
+                PropertyChanges {
+                    target: currentImg
+                    source : controler.currentAlbum.currentImage.sourceImage;
+                }
+                PropertyChanges {
+                    target: albumListText
+                    opacity : 0;
+                    enabled : false;
                 }
             },
             State {
@@ -179,10 +285,26 @@ ApplicationWindow {
                 PropertyChanges {
                     target: currentAlbum;
                     opacity: 0.0;
+                    enabled:false;
                 }
                 PropertyChanges {
                     target: albumList;
                     opacity: 1.0;
+                    enabled:true;
+                }
+                PropertyChanges {
+                    target: currentImg
+                    source : "Images/logo.png";
+                }
+                PropertyChanges {
+                    target: btnGroup
+                    opacity : 0;
+                    enabled : false;
+                }
+                PropertyChanges {
+                    target: albumListText
+                    opacity : 1.0;
+                    enabled : true;
                 }
             }
         ]
@@ -194,13 +316,13 @@ ApplicationWindow {
                 {
                     PropertyAnimation
                     {
-                        targets: [albumList];
+                        targets: [albumList,albumListText];
                         property: "opacity";
                         duration: 2000;
                     }
                     PropertyAnimation
                     {
-                        targets: [currentAlbum];
+                        targets: [currentAlbum,btnGroup];
                         property: "opacity";
                         duration: 2000;
                     }
@@ -213,13 +335,13 @@ ApplicationWindow {
                 {
                     PropertyAnimation
                     {
-                        targets: [currentAlbum];
+                        targets: [currentAlbum,btnGroup];
                         property: "opacity";
                         duration: 2000;
                     }
                     PropertyAnimation
                     {
-                        targets: [albumList];
+                        targets: [albumList,albumListText];
                         property: "opacity";
                         duration: 2000;
                     }

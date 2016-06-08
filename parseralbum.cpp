@@ -116,6 +116,43 @@ void ParserAlbum::writeCurrentInAlbum(int _current)
     }
 }
 
+void ParserAlbum::removeImage(Image *image)
+{
+    m_pFile->close();
+    if(!m_pFile->open(QIODevice::WriteOnly))
+    {
+        return;
+    }
+    QDomElement element = m_pDoc->documentElement();
+    QDomElement node  = element.firstChild().toElement();
+    QDomElement images = node;
+    node = node.firstChildElement();
+    while(!node.isNull())
+    {
+        qDebug() << node.tagName() << " : " << node.text();
+        if(node.text() == image->sourceImage())
+        {
+            images.removeChild(node);
+            qDebug() << "removed : " << node.text();
+            node = node.nextSibling().toElement();
+        }
+        else
+        {
+            node = node.nextSibling().toElement();
+        }
+    }
+    if(m_pFile->isOpen())
+    {
+        QTextStream(m_pFile) << m_pDoc->toString();
+        m_pFile->close();
+    }
+}
+
+QString ParserAlbum::getFileName()
+{
+    return m_pFile->fileName();
+}
+
 void ParserAlbum::setFile(const QString &_file)
 {
         m_pFile->setFileName(m_directory + "/" + _file + ".alm");

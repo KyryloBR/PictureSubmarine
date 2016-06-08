@@ -4,11 +4,17 @@ Item {
      id:item;
      height:65;
      width:600
+
+     function setTitleCurrentAlbum(_title)
+     {
+        title.setTitle(_title);
+     }
+
      Rectangle
      {
          id: rectangle1
          width: 600
-         color: "#585050"
+         color: "#ffffff"
          radius: 20
          anchors.top: parent.top
          anchors.topMargin: -15
@@ -64,6 +70,7 @@ Item {
          }
          ButtonCurrentTitle
          {
+             id:title;
              x: 225
              y: 15
              width: 150

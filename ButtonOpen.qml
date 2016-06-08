@@ -38,6 +38,7 @@ Item {
             }
             onClicked:
             {
+                fdOpenImage.nameCalledFunction = "Button Open";
                 fdOpenImage.open();
             }
         }

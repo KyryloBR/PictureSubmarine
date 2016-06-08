@@ -14,6 +14,19 @@ Album::Album(const Album &instance)
     m_pCurrentImage = instance.m_pCurrentImage;
 }
 
+Album::Album(QStringList &listImages, QString _currentImage)
+{
+    m_pCurrentImage = new Image(_currentImage);
+    for(int i = 0; i < listImages.size();++i)
+    {
+        m_imageList.append(new Image(listImages.at(i)));
+        if(m_imageList.at(i)->sourceImage() == _currentImage)
+        {
+            m_currentIndex = i;
+        }
+    }
+}
+
 Image *Album::currentImage()
 {
     if(m_pCurrentImage)
@@ -53,7 +66,21 @@ int Album::indexByImage(Image *_image)
 
 QString Album::name()
 {
-   return m_name;
+    return m_name;
+}
+
+int Album::countImage()
+{
+    return m_imageList.count();
+}
+
+Image *Album::imageByIndex(int index)
+{
+    if(index < countImage() || index >= 0)
+    {
+        return m_imageList.at(index);
+    }
+    return NULL;
 }
 
 void Album::setCurrentImage(int index)
@@ -153,4 +180,12 @@ void Album::move(int from, int to)
 void Album::setName(const QString &_name)
 {
     m_name = _name;
+}
+
+void Album::remove(int index)
+{
+    if(index > 0 || index < m_imageList.size())
+    {
+        m_imageList.removeAt(index);
+    }
 }

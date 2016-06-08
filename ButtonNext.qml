@@ -41,6 +41,7 @@ Item {
             onClicked:
             {
                 controler.currentAlbum.next();
+                currentAlbum.nextIndex();
                 slidePart1.start();
             }
 

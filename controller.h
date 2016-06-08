@@ -9,6 +9,8 @@
 #include "settings.h"
 #include <QMap>
 #include "parseralbum.h"
+#include "currentalbumcontroller.h"
+#include <QList>
 
 class Controller : public QObject
 {
@@ -28,13 +30,21 @@ signals:
     void configurationChanged(Settings*);
 
 public slots:
+    void setCurrentIndex(int index);
     void setCurrentAlbum(const QString & _id);
     void addImageToAlbum(const QString & _id, Image * _image);
     void addImageToAlbum(const QString & _id,const QString & _image);
+    void addImages(QList<QUrl> _files);
     void addImageToCurrentAlbum(Image * _image);
+    void addImageToCurrentAlbum(const QString & _source);
     void addAlbum(const QString & _id, Album * _newAlbum);
+    void addAlbum(const QString & _id);
     void loadAlbums();
     void writeCurrentImageInAlbum(int index);
+    void createCurrentAlbum(QString _dir, QString _currentImage);
+    void removePush(int index);
+    void removePop(int index);
+    void removeSelected();
 
 private:
     Album * m_pCurrentAlbum;
@@ -42,6 +52,8 @@ private:
     QMap<QString,Album*> m_listAlbums;
     Settings * m_pConfiguration;
     ParserAlbum * m_pParser;
+    CurrentAlbumController * m_pCurrentCtrl;
+    QList<int> m_removedIndex;
 };
 
 #endif // CONTROLLER_H

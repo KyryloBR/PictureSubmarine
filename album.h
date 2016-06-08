@@ -13,12 +13,15 @@ class Album : public QObject
 public:
     Album(QObject *parent = 0);
     Album(const Album & instance);
+    Album(QStringList & listImages, QString _currentImage);
 
     Image *currentImage();
     int currentIndex();
     Q_INVOKABLE QList<QObject *> getModel();
     Q_INVOKABLE int indexByImage(Image * _image);
     QString name();
+    Q_INVOKABLE int countImage();
+    Image * imageByIndex(int index);
 signals:
     void currentImageChanged(Image*);
     void currentIndexChanged(int);
@@ -37,6 +40,7 @@ public slots:
     void addBefore(int index, const QString &_source);
     void move(int from, int to);
     void setName(const QString & _name);
+    void remove(int index);
 
 private:
     Image * m_pCurrentImage;

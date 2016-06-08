@@ -16,6 +16,8 @@ public:
     void createNewAlbum();
     QString getDirectory();
     void writeCurrentInAlbum(int _current);
+    void removeImage(Image * image);
+    QString getFileName();
 
 public slots:
     void setFile(const QString & _file);

@@ -4,6 +4,7 @@
 #include "album.h"
 #include "controller.h"
 #include <QList>
+#include <QIcon>
 
 int main(int argc, char *argv[])
 {

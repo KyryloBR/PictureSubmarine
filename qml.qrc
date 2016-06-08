@@ -9,5 +9,14 @@
         <file>AlbumList.qml</file>
         <file>ButtonAlbumsOpen.qml</file>
         <file>ButtonCurrentTitle.qml</file>
+        <file>AddButton.qml</file>
+        <file>Images/AddButtonEnter.png</file>
+        <file>Images/AddButtonExit.png</file>
+        <file>InfoBox.qml</file>
+        <file>Images/RemoveButtonEnter.png</file>
+        <file>Images/RemoveButtonExit.png</file>
+        <file>RemoveButton.qml</file>
+        <file>Images/logo.png</file>
+        <file>AddWindow.qml</file>
     </qresource>
 </RCC>

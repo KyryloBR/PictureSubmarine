@@ -1,34 +1,31 @@
 import QtQuick 2.0
 
 Item {
-    id: btnPreviousItem
-    Rectangle {
-        id: btnPrevious
-        x: -40
-        y: -40
+    id:removeButton;
+    Rectangle
+    {
+        id: btnRemove;
         width: 45;
         height: 45;
-        radius: 23;
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.verticalCenter: parent.verticalCenter
-        state: "sExit";
-        border.width: 2
-        Text
+        color: "#00000000";
+        radius: 23
+        border.width: 2;
+        border.color: "#591542";
+        Image
         {
-            id: textBtnPrevious;
-            x: 14
-            y: 10
-            anchors.centerIn: btnPrevious;
-            text: "<";
-            font.bold: true
-            font.pointSize: 16
-            horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignVCenter
-            textFormat: Text.AutoText
+            id : textBtnRemove;
+            x: 5
+            y: 5
+            width : 35
+            height : 35
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.verticalCenter: parent.verticalCenter
+            source: "Images/RemoveButtonExit.png";
+            opacity: 1;
         }
         MouseArea
         {
-            anchors.fill: btnPrevious;
+            anchors.fill: btnRemove;
             hoverEnabled: true;
             onEntered:
             {
@@ -40,36 +37,35 @@ Item {
             }
             onClicked:
             {
-                controler.currentAlbum.previous();
-                currentAlbum.previousIndex();
-                slidePart1.start();
+                controler.removeSelected();
+                currentAlbum.setModelCurrent(controler.currentAlbum.getModel());
+                console.log("REmoved");
             }
-
         }
 
         states:[
             State {
                 name: "sExit"
                 PropertyChanges {
-                    target: btnPrevious;
+                    target: btnRemove;
                     border.color: "#591542";
                     color: "#00000000";
                 }
                 PropertyChanges {
-                    target: textBtnPrevious;
-                    color: "#591542";
+                    target: textBtnRemove;
+                    source: "Images/RemoveButtonExit.png";
                 }
             },
             State{
                 name:"sEnter";
                 PropertyChanges {
-                    target: btnPrevious;
+                    target: btnRemove;
                     border.color: "#585050";
                     color: "#591542";
                 }
                 PropertyChanges {
-                    target: textBtnPrevious;
-                    color: "#585050";
+                    target: textBtnRemove;
+                    source: "Images/RemoveButtonEnter.png";
 
                 }
 
@@ -81,13 +77,12 @@ Item {
                 to: "*";
                 PropertyAnimation
                 {
-                    targets: [btnPrevious,textBtnPrevious];
-                    properties: "border.color,color";
+                    target: btnRemove;
+                    properties: "border.color";
                     duration: 1000;
                 }
             }
         ]
-
     }
 }
 

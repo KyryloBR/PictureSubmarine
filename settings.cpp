@@ -5,13 +5,31 @@
 Settings::Settings(QObject *parent) : QObject(parent)
 {
     m_configuration = new QSettings("Shaman","Picture Sumarine");
-//     m_defaults.insert("directory/currentAlbum",false);
-//     m_defaults.insert("directory/currentAlbumFile","none");
-//     m_defaults.insert("directory/albumPath","/album");
-//     m_defaults.insert("app/y",0);
-//     m_defaults.insert("app/x",0);
-//     m_defaults.insert("app/height",480);
-//     m_defaults.insert("app/width",640);
+    initialDefaults();
+    if(m_configuration->value("directory/currentAlbumFile").toString() == "")
+    {
+        m_configuration->setValue("directory/currentAlbumFile",m_defaults["directory/currentAlbumFile"]);
+    }
+    if(m_configuration->value("directory/albumPath").toString() == "")
+    {
+        m_configuration->setValue("directory/albumPath",m_defaults["directory/albumPath"]);
+    }
+    if(m_configuration->value("app/width").toString() == "")
+    {
+         m_configuration->setValue("app/width",m_defaults["app/width"].toInt());
+    }
+    if(m_configuration->value("app/height").toString() == "")
+    {
+        m_configuration->setValue("app/height",m_defaults["app/height"].toInt());
+    }
+    if(m_configuration->value("app/x").toString() == "")
+    {
+        m_configuration->setValue("app/x",m_defaults["app/x"].toInt());
+    }
+    if(m_configuration->value("app/y").toString() == "")
+    {
+        m_configuration->setValue("app/y",m_defaults["app/y"].toInt());
+    }
 }
 
 int Settings::width()
@@ -36,17 +54,12 @@ int Settings::y()
 
 QString Settings::albumPath()
 {
-    return m_configuration->value("directory/albumPath").toString() == "" ? "/album" : m_configuration->value("directory/albumPath").toString();
+    return m_configuration->value("directory/albumPath").toString();
 }
 
 QString Settings::currentAlbumFile()
 {
     return m_configuration->value("directory/currentAlbumFile").toString();
-}
-
-bool Settings::isCurrent()
-{
-    return m_configuration->value("directory/currentAlbum").toBool();
 }
 
 void Settings::setWidth(int _width)
@@ -79,9 +92,14 @@ void Settings::setCurrentAlbumFile(const QString &_file)
     m_configuration->setValue("directory/currentAlbumFile",_file);
 }
 
-void Settings::setCurrent(bool _current)
+void Settings::initialDefaults()
 {
-    m_configuration->setValue("directory/currentAlbum",_current);
+    m_defaults.insert("app/width","640");
+    m_defaults.insert("app/height","480");
+    m_defaults.insert("app/x","0");
+    m_defaults.insert("app/y","0");
+    m_defaults.insert("directory/albumPath","/album");
+    m_defaults.insert("directory/currentAlbumFile","none");
 }
 
 

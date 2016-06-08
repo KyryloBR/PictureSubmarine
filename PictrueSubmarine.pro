@@ -7,7 +7,8 @@ SOURCES += main.cpp \
     album.cpp \
     controller.cpp \
     settings.cpp \
-    parseralbum.cpp
+    parseralbum.cpp \
+    currentalbumcontroller.cpp
 
 RESOURCES += qml.qrc
 
@@ -22,5 +23,6 @@ HEADERS += \
     album.h \
     controller.h \
     settings.h \
-    parseralbum.h
+    parseralbum.h \
+    currentalbumcontroller.h
 

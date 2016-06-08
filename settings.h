@@ -10,15 +10,14 @@ class Settings : public QObject
     Q_OBJECT
 public:
     Settings(QObject *parent = 0);
-    int width();
-    int height();
-    int x(); //sss
-    int y();
+    Q_INVOKABLE int width();
+    Q_INVOKABLE int height();
+    Q_INVOKABLE int x();
+    Q_INVOKABLE int y();
 
-    QString albumPath();
-    QString currentAlbumFile();
+    Q_INVOKABLE QString albumPath();
+    Q_INVOKABLE QString currentAlbumFile();
 
-    bool isCurrent();
 signals:
     void widthChanged(int);
     void heightChanged(int);
@@ -28,21 +27,21 @@ signals:
     void albumPathChanged(QString);
     void currentAlbumFileChanged(QString);
 
-    void currentChanged(bool);
-
 public slots:
-    void setWidth(int _width);
-    void setHeight(int _height);
-    void setX(int _x);
-    void setY(int _y);
+    Q_INVOKABLE void setWidth(int _width);
+    Q_INVOKABLE void setHeight(int _height);
+    Q_INVOKABLE void setX(int _x);
+    Q_INVOKABLE void setY(int _y);
 
-    void setAlbumPath(const QString & _path);
-    void setCurrentAlbumFile(const QString & _file);
+    Q_INVOKABLE void setAlbumPath(const QString & _path);
+    Q_INVOKABLE void setCurrentAlbumFile(const QString & _file);
 
-    void setCurrent(bool _current);
 
 private:
+    void initialDefaults();
+
     QSettings * m_configuration;
+    QMap<QString,QString> m_defaults;
 };
 
 #endif // SETTINGS_H
