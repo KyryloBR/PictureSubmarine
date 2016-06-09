@@ -22,6 +22,7 @@ public:
 public slots:
     void setFile(const QString & _file);
     void setDirectory(const QString & _dir);
+    void removeFile(const QString & _file);
 
 private:
     void getImages(Album &alb, QDomNodeList list);

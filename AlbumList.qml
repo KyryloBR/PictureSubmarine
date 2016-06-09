@@ -4,12 +4,17 @@ Item {
     id:itemAlbumList;
     function setEnabledDelegate(_enabled)
     {
-        albumList.enabled = _enabled;
+        lvAlbumList.enabled = _enabled;
+    }
+
+    function setModel(_model)
+    {
+        lvAlbumList.model = _model;
     }
 
     ListView
     {
-        id:albumList;
+        id:lvAlbumList;
         width: 420
         height: 130
         enabled: true;
@@ -26,6 +31,7 @@ Item {
         delegate:Row{
                     id:rowAlbumList;
                     state: "sExit";
+                    property bool selected: false;
                     Rectangle
                     {
                        height : 130;
@@ -91,18 +97,55 @@ Item {
                         {
                             anchors.fill: parent;
                             hoverEnabled: true;
-                            onEntered: rowAlbumList.state = "sEnter";
-                            onExited: rowAlbumList.state = "sExit";
+                            onEntered:
+                            {
+                                if(rowAlbumList.state !== "sSelected")
+                                {
+                                    rowAlbumList.state = "sEnter";
+                                }
+                            }
+                            onExited:
+                            {
+                                if(rowAlbumList.state !== "sSelected")
+                                {
+                                    rowAlbumList.state = "sExit";
+                                }
+                            }
                             onClicked:
                             {
-                                controler.setCurrentAlbum(modelData.name);
-                                btnGroup.setTitleCurrentAlbum(modelData.name);
-//                                controler.configuration.setCurrentAlbumFile(modelData.name);
-                                currentAlbum.setCurrentIndex(controler.currentAlbum.currentIndex);
-                                slidePart1.start();
-                                currentAlbum.setModelCurrent(controler.currentAlbum.getModel());
-                                generalWindow.state = "sCurrentAlbumShow";
+                                if ((mouse.button == Qt.LeftButton) && (mouse.modifiers & Qt.ControlModifier))
+                                {
+                                    rowAlbumList.selected = !rowAlbumList.selected;
+                                }
+                                else
+                                {
+                                    controler.setCurrentAlbum(modelData.name);
+                                    btnGroup.setTitleCurrentAlbum(modelData.name);
+                                    currentAlbum.setCurrentIndex(controler.currentAlbum.currentIndex);
+                                    slidePart1.start();
+                                    currentAlbum.setModelCurrent(controler.currentAlbum.getModel());
+                                    generalWindow.state = "sCurrentAlbumShow";
+                                }
                             }
+                        }
+
+                        PropertyAnimation {
+                            id: aSelected
+                            target: delAlbumList
+                            property: "color";
+                            from: "#ffffff"
+                            to: "#591542"
+                            duration: 500;
+                            easing.type: Easing.InOutQuad
+                        }
+                        PropertyAnimation {
+                            id: aUnSelected
+                            target: delAlbumList
+                            property: "color";
+                            from: "#591542"
+                            to : "#ffffff"
+                            duration: 500;
+                            easing.type: Easing.InOutQuad
                         }
                     }
                     states :[
@@ -119,6 +162,13 @@ Item {
                                 target: delAlbumList;
                                 color:"#00000000"
                             }
+                        },
+                        State {
+                            name: "sSelect"
+                            PropertyChanges {
+                                target: delAlbumList
+                                color: "#591542"
+                            }
                         }
                     ]
                     transitions: [
@@ -133,6 +183,21 @@ Item {
                             }
                         }
                     ]
+                    onSelectedChanged:
+                    {
+                        if(selected === true)
+                        {
+                            controler.removePush(modelData.name);
+                            console.log("Selected");
+                            delAlbumList.state = "sSelect";
+                        }
+                        else
+                        {
+                            controler.removePop(modelData.name);
+                            console.log("UnSelected");
+                            delAlbumList.state = "sExit";
+                        }
+                    }
         }
     }
 }

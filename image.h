@@ -11,7 +11,7 @@ class Image : public QObject
     Q_OBJECT
     Q_PROPERTY(QString sourceImage READ sourceImage WRITE setSourceImage NOTIFY sourceImageChanged)
 public:
-    Image(const QString & _source = "", QObject *parent = 0);
+    Image(const QString & _source = "Images/logo.png", QObject *parent = 0);
     Image(const Image & instance);
 
     QString & sourceImage();

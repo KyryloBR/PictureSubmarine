@@ -39,6 +39,7 @@ Item {
             onClicked:
             {
                 generalWindow.state === "sCurrentAlbumShow" ? generalWindow.state = "sAlbumListShow" : generalWindow.state = "sCurrentAlbumShow";
+                albumList.setModel(controler.getModelAlbum());
             }
         }
 

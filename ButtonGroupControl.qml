@@ -66,7 +66,6 @@ Item {
              anchors.leftMargin: 10
              anchors.right: parent.right
              anchors.rightMargin: 540
-
          }
          ButtonCurrentTitle
          {

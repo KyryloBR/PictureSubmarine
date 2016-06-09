@@ -95,6 +95,7 @@ Item {
                     if(nameAlbum.text !== "")
                     {
                         controler.addAlbum(nameAlbum.text.toString());
+                        albumList.setModel(controler.getModelAlbum());
                         addWindow.state = "sHide";
                     }
                     else

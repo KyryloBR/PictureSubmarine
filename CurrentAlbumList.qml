@@ -56,26 +56,10 @@ Item {
         anchors.rightMargin: 0
         anchors.left: parent.left
         anchors.leftMargin: 0
-        currentIndex: 0;
+        currentIndex: controler.currentAlbum.currentIndex;
         model: controler.currentAlbum.getModel();
         orientation: ListView.Horizontal
         flickableDirection: Flickable.AutoFlickDirection;
-        highlightFollowsCurrentItem: true;
-        highlight: Item
-        {
-            z:9;
-            Rectangle
-            {
-                id:rectHighlight;
-                x : 10;
-                width: 110;
-                height: 110;
-                z:10;
-                color:"#00000000";
-                border.color: "#591542"
-                border.width: 2;
-            }
-        }
         
         delegate: Row{
             id: rowCurrentAlbum;
@@ -111,9 +95,9 @@ Item {
                         {
                             if(controler.currentAlbum.indexByImage(modelData) !== -1)
                             {
-                                slidePart1.start();
                                 currentAlbumList.currentIndex = index;
                                 controler.currentAlbum.setCurrentImage(controler.currentAlbum.indexByImage(modelData));
+                                slidePart1.start();
                             }
                             if ((mouse.button == Qt.LeftButton) && (mouse.modifiers & Qt.ControlModifier))
                             {

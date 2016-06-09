@@ -3,7 +3,8 @@
 
 Album::Album(QObject *parent) : QObject(parent)
 {
-
+    m_currentIndex = -1;
+    m_pCurrentImage = new Image();
 }
 
 Album::Album(const Album &instance)

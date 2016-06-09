@@ -4,6 +4,7 @@
 
 ParserAlbum::ParserAlbum(const QString & _dir, QObject *parent) : QObject(parent)
 {
+    qDebug() << "Directory : " << _dir;
     m_directory = _dir;
     m_pFile = new QFile();
     m_pDoc = new QDomDocument();
@@ -164,6 +165,13 @@ void ParserAlbum::setDirectory(const QString &_dir)
     m_directory = _dir;
 }
 
+void ParserAlbum::removeFile(const QString &_file)
+{
+    QDir dir;
+    dir.setPath(m_directory);
+    dir.remove(_file + ".alm");
+}
+
 void ParserAlbum::getImages(Album & alb, QDomNodeList list)
 {
     for(int i = 0; i < list.count(); ++i)
@@ -178,7 +186,6 @@ QDomElement ParserAlbum::createElement(const QString &_name, const QString &_tex
     if(!_name.isEmpty())
     {
         domElement = m_pDoc->createElement(_name);
-
     }
 
     if(!_text.isEmpty())
@@ -186,7 +193,6 @@ QDomElement ParserAlbum::createElement(const QString &_name, const QString &_tex
         QDomText text = m_pDoc->createTextNode(_text);
         domElement.appendChild(text);
     }
-
     return domElement;
 }
 

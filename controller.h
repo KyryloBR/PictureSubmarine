@@ -45,6 +45,12 @@ public slots:
     void removePush(int index);
     void removePop(int index);
     void removeSelected();
+    void removeClear();
+
+    void removePush(const QString & _id);
+    void removePop(const QString & _id);
+    void removeSelectedAlbum();
+    void removeAlbumClear();
 
 private:
     Album * m_pCurrentAlbum;
@@ -54,6 +60,7 @@ private:
     ParserAlbum * m_pParser;
     CurrentAlbumController * m_pCurrentCtrl;
     QList<int> m_removedIndex;
+    QList<QString> m_removedAlbums;
 };
 
 #endif // CONTROLLER_H

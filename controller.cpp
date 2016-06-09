@@ -10,16 +10,16 @@ Controller::Controller(QObject *parent) : QObject(parent)
    m_pConfiguration = new Settings();
    m_pParser = new ParserAlbum(QDir::currentPath() + m_pConfiguration->albumPath());
    loadAlbums();
-//   if(m_listAlbums.find(m_pConfiguration->currentAlbumFile()) != m_listAlbums.end())
-//   {
-//       m_pCurrentAlbum = m_listAlbums[/*m_pConfiguration->currentAlbumFile()*/"current"];
+   if(m_listAlbums.find(m_pConfiguration->currentAlbumFile()) != m_listAlbums.end())
+   {
+       m_pCurrentAlbum = m_listAlbums[m_pConfiguration->currentAlbumFile()];
 //       qDebug() << "Current Album Condition : " << m_pConfiguration->currentAlbumFile();
 //       qDebug() << "Current Album : " << m_pCurrentAlbum->name();
-//   }
-//   else
-//   {
-   m_pCurrentAlbum = new Album();
-//   }
+   }
+   else
+   {
+       m_pCurrentAlbum = new Album();
+   }
    m_pCurrentCtrl = new CurrentAlbumController(m_pParser);
    connect(m_pCurrentAlbum,SIGNAL(currentIndexChanged(int)),this,SLOT(writeCurrentImageInAlbum(int)));
    connect(m_pCurrentAlbum,SIGNAL(currentIndexChanged(int)),this, SLOT(setCurrentIndex(int)));
@@ -66,9 +66,14 @@ void Controller::setCurrentIndex(int index)
 
 void Controller::setCurrentAlbum(const QString &_id)
 {
-    if(m_listAlbums.find(_id) != m_listAlbums.end())
+    if(_id == "none")
+    {
+        m_pConfiguration->setCurrentAlbumFile(_id);
+    }
+    else if(m_listAlbums.find(_id) != m_listAlbums.end())
     {
         m_pCurrentAlbum = m_listAlbums[_id];
+        m_pConfiguration->setCurrentAlbumFile(_id);
         emit currentAlbumChanged(m_pCurrentAlbum);
         emit currentIdChanged(_id);
     }
@@ -209,4 +214,34 @@ void Controller::removeSelected()
         m_pCurrentAlbum->remove(m_removedIndex.at(i));
     }
     m_removedIndex.clear();
+}
+
+void Controller::removeClear()
+{
+    m_removedIndex.clear();
+}
+
+void Controller::removePush(const QString &_id)
+{
+    m_removedAlbums.push_back(_id);
+}
+
+void Controller::removePop(const QString &_id)
+{
+    m_removedAlbums.removeOne(_id);
+}
+
+void Controller::removeSelectedAlbum()
+{
+    for(int i = 0; i < m_removedAlbums.count();++i)
+    {
+        m_pParser->removeFile(m_removedAlbums.at(i));
+        m_listAlbums.remove(m_removedAlbums.at(i));
+    }
+    m_removedAlbums.clear();
+}
+
+void Controller::removeAlbumClear()
+{
+    m_removedAlbums.clear();
 }

@@ -14,12 +14,7 @@ int main(int argc, char *argv[])
     app.setApplicationVersion("0.1");
 
     QQmlApplicationEngine engine;
-    Album * album = new Album();
-    album->append("D:/Download/1.jpg");
-    album->setCurrentIndex(0);
     Controller * pControl = new Controller;
-    pControl->setCurrentAlbum("temp");
-    pControl->currentAlbum()->setCurrentImage(0);
     engine.rootContext()->setContextProperty("controler",pControl);
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
 

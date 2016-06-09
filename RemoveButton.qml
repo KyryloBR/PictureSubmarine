@@ -37,9 +37,18 @@ Item {
             }
             onClicked:
             {
-                controler.removeSelected();
-                currentAlbum.setModelCurrent(controler.currentAlbum.getModel());
-                console.log("REmoved");
+                if(generalWindow.state === "sCurrentAlbumShow")
+                {
+                    controler.removeSelected();
+                    currentAlbum.setModelCurrent(controler.currentAlbum.getModel());
+                    console.log("REmoved");
+                }
+                else
+                {
+                    controler.removeSelectedAlbum();
+                    albumList.setModel(controler.getModelAlbum());
+                    console.log("Remove album");
+                }
             }
         }
 

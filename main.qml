@@ -77,13 +77,14 @@ ApplicationWindow {
         anchors.leftMargin: -1
         anchors.topMargin: -3
         anchors.fill: parent
-        state :"sAlbumListShow";
+        state : controler.configuration.currentAlbumFile() === "none" ? "sAlbumListShow" : "sCurrentAlbumShow";
 
         onStateChanged:
         {
             if(generalWindow.state === "sAlbumListShow")
             {
                 slidePart2.start();
+                controler.setCurrentAlbum("none");
             }
         }
 
@@ -227,7 +228,7 @@ ApplicationWindow {
             z : 3;
             width: 355
             height: 85
-            state:"sHide";
+            state:"sHide"
             message: ""
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.verticalCenter: parent.verticalCenter
