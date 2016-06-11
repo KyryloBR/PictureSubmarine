@@ -44,6 +44,19 @@ Item {
             horizontalAlignment: Text.AlignHCenter
             font.pointSize: 10
             selectionColor: "#591542"
+            Keys.onReturnPressed:
+            {
+                if(nameAlbum.text !== "")
+                {
+                    controler.addAlbum(nameAlbum.text.toString());
+                    albumList.setModel(controler.getModelAlbum());
+                    addWindow.state = "sHide";
+                }
+                else
+                {
+                    nameAlbum.text = "Input name for new album";
+                }
+            }
         }
 
         Rectangle {
@@ -114,7 +127,7 @@ Item {
                     }
                     PropertyChanges {
                         target: txtBtnOk;
-                        color: "#591542";
+                        color: "#ffffff";
                     }
                 },
                 State{
@@ -201,7 +214,7 @@ Item {
                     }
                     PropertyChanges {
                         target: txtBtnCancel;
-                        color: "#591542";
+                        color: "#ffffff";
                     }
                 },
                 State{

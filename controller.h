@@ -11,6 +11,7 @@
 #include "parseralbum.h"
 #include "currentalbumcontroller.h"
 #include <QList>
+#include "addedimages.h"
 
 class Controller : public QObject
 {
@@ -59,6 +60,7 @@ private:
     Settings * m_pConfiguration;
     ParserAlbum * m_pParser;
     CurrentAlbumController * m_pCurrentCtrl;
+    AddedImages * m_pAdded;
     QList<int> m_removedIndex;
     QList<QString> m_removedAlbums;
 };

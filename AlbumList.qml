@@ -99,17 +99,11 @@ Item {
                             hoverEnabled: true;
                             onEntered:
                             {
-                                if(rowAlbumList.state !== "sSelected")
-                                {
                                     rowAlbumList.state = "sEnter";
-                                }
                             }
                             onExited:
                             {
-                                if(rowAlbumList.state !== "sSelected")
-                                {
                                     rowAlbumList.state = "sExit";
-                                }
                             }
                             onClicked:
                             {
@@ -132,19 +126,19 @@ Item {
                         PropertyAnimation {
                             id: aSelected
                             target: delAlbumList
-                            property: "color";
-                            from: "#ffffff"
-                            to: "#591542"
-                            duration: 500;
+                            property: "border.width";
+                            from: 3
+                            to: 6
+                            duration: 1000;
                             easing.type: Easing.InOutQuad
                         }
                         PropertyAnimation {
                             id: aUnSelected
                             target: delAlbumList
-                            property: "color";
-                            from: "#591542"
-                            to : "#ffffff"
-                            duration: 500;
+                            property: "border.width";
+                            from: 6
+                            to : 3
+                            duration: 1000;
                             easing.type: Easing.InOutQuad
                         }
                     }
@@ -154,6 +148,7 @@ Item {
                             PropertyChanges {
                                 target: delAlbumList;
                                 color: "#ffffff"
+                                border.color: "#591542"
                             }
                         },
                         State {
@@ -161,13 +156,7 @@ Item {
                             PropertyChanges {
                                 target: delAlbumList;
                                 color:"#00000000"
-                            }
-                        },
-                        State {
-                            name: "sSelect"
-                            PropertyChanges {
-                                target: delAlbumList
-                                color: "#591542"
+                                border.color: "#591542"
                             }
                         }
                     ]
@@ -188,14 +177,14 @@ Item {
                         if(selected === true)
                         {
                             controler.removePush(modelData.name);
-                            console.log("Selected");
-                            delAlbumList.state = "sSelect";
+//                            delAlbumList.border.width = 6;
+                            aSelected.start();
                         }
                         else
                         {
                             controler.removePop(modelData.name);
-                            console.log("UnSelected");
-                            delAlbumList.state = "sExit";
+//                            delAlbumList.border.width = 3;
+                            aUnSelected.start();
                         }
                     }
         }

@@ -65,6 +65,7 @@ ApplicationWindow {
             }
 
             currentAlbum.setModelCurrent(controler.currentAlbum.getModel());
+            albumList.setModel(controler.getModelAlbum());
         }
     }
 
@@ -148,7 +149,7 @@ ApplicationWindow {
             height: 130
             z: 2
             anchors.right: parent.right;
-            anchors.rightMargin: 111
+            anchors.rightMargin: 154
             anchors.left: parent.left;
             anchors.leftMargin: 0
             anchors.bottom: parent.bottom;
@@ -166,20 +167,20 @@ ApplicationWindow {
             anchors.left: parent.left
             anchors.leftMargin: 0
             anchors.right: parent.right
-            anchors.rightMargin: 111
+            anchors.rightMargin: 154
         }
 
         Rectangle {
             id: rectangle1
-            x: 530
-            y: 0
-            width: 111
+            x: 488
+            y: 353
+            width: 153
             height: 130
             color: "#585050"
-            anchors.bottom: parent.bottom
-            anchors.bottomMargin: 0
             anchors.right: parent.right
             anchors.rightMargin: 0
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 0
             z: 3
             border.width: 0
 
@@ -190,20 +191,35 @@ ApplicationWindow {
                 width: 50
                 anchors.top: parent.top
                 anchors.topMargin: 8
+                anchors.right: parent.right
+                anchors.rightMargin: 6
                 anchors.bottom: parent.bottom
                 anchors.bottomMargin: 72
-                anchors.horizontalCenter: parent.horizontalCenter
             }
 
             RemoveButton
             {
                 x: 31
                 width: 50
+                anchors.right: parent.right
+                anchors.rightMargin: 6
                 anchors.top: parent.top
                 anchors.topMargin: 72
                 anchors.bottom: parent.bottom
                 anchors.bottomMargin: 8
+                anchors.horizontalCenterOffset: 45
                 anchors.horizontalCenter: parent.horizontalCenter
+            }
+
+            ButtonOpen {
+                id: buttonOpen1
+                width: 50
+                anchors.top: parent.top
+                anchors.topMargin: 72
+                anchors.left: parent.left
+                anchors.leftMargin: 8
+                anchors.bottom: parent.bottom
+                anchors.bottomMargin: 8
             }
         }
 

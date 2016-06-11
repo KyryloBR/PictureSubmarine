@@ -13,13 +13,12 @@ Controller::Controller(QObject *parent) : QObject(parent)
    if(m_listAlbums.find(m_pConfiguration->currentAlbumFile()) != m_listAlbums.end())
    {
        m_pCurrentAlbum = m_listAlbums[m_pConfiguration->currentAlbumFile()];
-//       qDebug() << "Current Album Condition : " << m_pConfiguration->currentAlbumFile();
-//       qDebug() << "Current Album : " << m_pCurrentAlbum->name();
    }
    else
    {
        m_pCurrentAlbum = new Album();
    }
+   m_pAdded = new AddedImages(m_pParser->getDirectory());
    m_pCurrentCtrl = new CurrentAlbumController(m_pParser);
    connect(m_pCurrentAlbum,SIGNAL(currentIndexChanged(int)),this,SLOT(writeCurrentImageInAlbum(int)));
    connect(m_pCurrentAlbum,SIGNAL(currentIndexChanged(int)),this, SLOT(setCurrentIndex(int)));
@@ -105,8 +104,10 @@ void Controller::addImages(QList<QUrl> _files)
     for(int i = 0; i < _files.count();++i)
     {
         m_pCurrentAlbum->append(_files.at(i).toString());
-        m_pParser->writeToAlbumByFile(_files.at(i).toString());
     }
+    m_pAdded->setFiles(_files);
+    m_pAdded->setFileName(m_pCurrentAlbum->name());
+    m_pAdded->start();
 }
 
 void Controller::addImageToCurrentAlbum(Image *_image)
